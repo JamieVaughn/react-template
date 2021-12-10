@@ -4,26 +4,28 @@ import React from 'react'
 type Props = {
   children: any
 }
+type Error = string | number | null
+type ErrorInfo = {
+  componentStack: string
+} | null
 
 type ErrorState = {
-  error: string | number
-  errorInfo: {
-    componentStack: string
-  }
+  error: Error
+  errorInfo: ErrorInfo
 }
 
 export default class ErrorBoundary extends React.Component<Props, ErrorState> {
-  constructor(props) {
+  constructor(props: any) {
     super(props)
     this.state = { error: null, errorInfo: null }
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: string | number | null) {
     // catch errors in render phase
     return { hasError: true }
   }
-
-  componentDidCatch(error, errorInfo) {
+  // @ts-ignore
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Catch errors in commit phase in any components below and re-render with error message
     this.setState({
       error: error,
